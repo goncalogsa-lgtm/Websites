@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T3 Moto Performance</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        :root {
+            --primary: #E60000;
+            /* O Vermelho T3 */
+            --primary-dark: #cc0000;
+            --bg-body: #050505;
+            --bg-card: #0F0F0F;
+            --bg-card-light: #161616;
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
+            --font-display: 'Rajdhani', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Rolagem suave ao clicar no menu */
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-white);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .red-text {
+            color: var(--primary);
+        }
+
+        /* Botões */
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 35px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 0 20px rgba(230, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* --- MENU / NAVBAR (NOVO) --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.2);
+            /* Transparente no início */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+            padding: 15px 0;
+        }
+
+        .navbar.scrolled {
+            padding: 5px 0;
+            background: rgba(0, 0, 0, 0.95);
+            /* Preto quase sólido no scroll */
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .logo-t3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -2px;
+            font-family: var(--font-display);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .logo-text span:first-child {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .logo-text span:last-child {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Lado Direito (Desktop) */
+        .nav-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        /* Linha Superior (Social + Lang) */
+        .nav-top-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 5px;
+        }
+
+        .social-icons a {
+            color: #888;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+        }
+
+        .divider-vertical {
+            width: 1px;
+            height: 15px;
+            background: #333;
+        }
+
+        .lang-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .flag {
+            width: 18px;
+            border-radius: 2px;
+        }
+
+        .flag.grayscale {
+            filter: grayscale(100%);
+            opacity: 0.5;
+        }
+
+        .lang-text {
+            font-size: 0.8rem;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        /* Linha Inferior (Links) */
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Styles */
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: black;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 0.4s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            right: 0;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .mobile-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-links li {
+            margin: 20px 0;
+        }
+
+        .mobile-links a {
+            color: white;
+            font-size: 2rem;
+            text-decoration: none;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .mobile-links a:hover {
+            color: var(--primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            line-height: 0.9;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #ddd;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 35px;
+            border: 2px solid #555;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .scroll-dot {
+            width: 4px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 2px;
+            margin-top: 5px;
+            animation: scroll 1.5s infinite;
+        }
+
+        @keyframes scroll {
+            0% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+        }
+
+        /* --- SERVICES --- */
+        .services-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: var(--text-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 40px;
+            text-align: left;
+            border-radius: 8px;
+            border: 1px solid #222;
+            background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
+            background-size: 10px 10px;
+            transition: 0.4s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(230, 0, 0, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            border: 1px solid rgba(230, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- DYNO --- */
+        .dyno-section {
+            background-color: #080808;
+            padding: 100px 0;
+        }
+
+        .dyno-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .dyno-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .dyno-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+        }
+
+        .dyno-content {
+            flex: 1;
+        }
+
+        .dyno-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-box {
+            background: var(--bg-card-light);
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #222;
+            flex: 1;
+        }
+
+        .stat-box h4 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-box span {
+            color: var(--text-gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .stat-box i {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            background: var(--bg-card-light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #222;
+        }
+
+        .chart-title {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 150px;
+            gap: 10px;
+        }
+
+        .bar {
+            width: 100%;
+            background: #333;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 1s;
+        }
+
+        .bar.highlight {
+            background: var(--primary);
+            box-shadow: 0 0 15px rgba(230, 0, 0, 0.4);
+        }
+
+        /* --- TIMELINE --- */
+        .timeline-section {
+            padding: 100px 0;
+            background: var(--bg-body);
+            text-align: center;
+        }
+
+        .timeline-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 60px;
+            position: relative;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            right: 50px;
+            height: 2px;
+            background: #333;
+            z-index: 0;
+        }
+
+        .timeline-line-progress {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            height: 2px;
+            width: 0%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            z-index: 1;
+            transition: width 2s ease;
+        }
+
+        .timeline-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+        }
+
+        .hexagon {
+            width: 100px;
+            height: 100px;
+            background: var(--bg-body);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .hexagon-border {
+            width: 104px;
+            height: 104px;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .timeline-step:hover .hexagon-border {
+            background: var(--primary);
+        }
+
+        .timeline-step:hover .step-icon {
+            color: var(--primary);
+        }
+
+        .step-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 5px;
+            color: white;
+        }
+
+        .step-icon {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .timeline-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .timeline-step p {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+
+        /* --- COMPETITION --- */
+        .comp-section {
+            padding: 100px 0;
+            background: #0a0a0a;
+        }
+
+        .comp-grid {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .comp-card {
+            min-width: 380px;
+            height: 450px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid #333;
+        }
+
+        .comp-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+        }
+
+        .comp-card-content {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .comp-icon {
+            background: rgba(230, 0, 0, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .learn-more {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: black;
+            padding: 80px 0 30px;
+            border-top: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h2 {
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            color: #888;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 12px;
+            color: #888;
+        }
+
+        .footer-col i {
+            width: 20px;
+            color: #666;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            background: #111;
+            border: 1px solid #333;
+            padding: 10px;
+            color: white;
+            flex: 1;
+            border-radius: 4px;
+        }
+
+        .btn-small {
+            background: var(--primary);
+            border: none;
+            padding: 0 15px;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- RESPONSIVO --- */
+        @media (max-width: 900px) {
+            .nav-right {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .dyno-container {
+                flex-direction: column;
+            }
+
+            .timeline-wrapper {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
+            .timeline-step {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+
+            <a href="#" class="nav-logo">
+                <span class="logo-t3">T3</span>
+                <div class="logo-text">
+                    <span>MOTORCYCLE</span>
+                    <span class="red-text">PERFORMANCE</span>
+                </div>
+            </a>
+
+            <div class="nav-right">
+                <div class="nav-top-row">
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                    <div class="divider-vertical"></div>
+                    <div class="lang-selector">
+                        <img src="https://flagcdn.com/24x18/pt.png" alt="PT" class="flag">
+                        <img src="https://flagcdn.com/24x18/gb.png" alt="UK" class="flag grayscale">
+                        <span class="lang-text">PT <i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#services">Serviços</a></li>
+                    <li><a href="#dyno">Dyno Room</a></li>
+                    <li><a href="#timeline">Remapeamento ECU</a></li>
+                    <li><a href="#competition">Formação</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </div>
+
+            <div class="mobile-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+
+        <div class="mobile-menu-overlay">
+            <i class="fas fa-times close-menu"></i>
+            <ul class="mobile-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#services">Serviços</a></li>
+                <li><a href="#dyno">Dyno Room</a></li>
+                <li><a href="#timeline">Remapeamento ECU</a></li>
+                <li><a href="#competition">Formação</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" id="hero">
+        <div class="container hero-content">
+            <h2>T3 MOTO</h2>
+            <h1 class="red-text">PERFORMANCE</h1>
+            <p>Desbloqueia o verdadeiro potencial da tua moto com engenharia de precisão.</p>
+            <a href="#services" class="btn">Agendar Serviço</a>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-dot"></div>
+        </div>
+    </header>
+
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Performance for <span class="red-text">All</span></h2>
+                <p>Serviços abrangentes desenhados para extrair o máximo de cada máquina.</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-microchip"></i></div>
+                    <h3>ECU Remapping</h3>
+                    <p>Desbloqueia potência escondida. Mapas customizados ajustados ao teu estilo de condução.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-wrench"></i></div>
+                    <h3>Oficina & Mecânica</h3>
+                    <p>Serviços mecânicos experts, desde manutenção de rotina a reconstrução de motores.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                    <h3>Suspensão Tuning</h3>
+                    <p>Ajuste perfeito para pista ou estrada. Geometria otimizada para segurança.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dyno" class="dyno-section">
+        <div class="dyno-container">
+            <div class="dyno-image">
+                <img src="https://static.wixstatic.com/media/1362f0_3b6ceb166af14a4595e625f0f03a16f2~mv2.jpeg/v1/fill/w_676,h_585,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/1362f0_3b6ceb166af14a4595e625f0f03a16f2~mv2.jpeg"
+                    alt="Moto no Dyno">
+            </div>
+
+            <div class="dyno-content">
+                <h2>The <span class="red-text">Dyno</span> Room</h2>
+                <p style="color: #bbb; margin-bottom: 30px;">
+                    O nosso banco de ensaio de última geração permite medir cada aspeto da performance com precisão
+                    científica. Análise de dados em tempo real garante resultados ótimos.
+                </p>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h4>125 HP</h4>
+                        <span>Peak Power</span>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-chart-line"></i>
+                        <h4 style="color: #4cd137;">+18%</h4>
+                        <span>Power Gain</span>
+                    </div>
+                    <div class="stat-box">
+                        <i class="fas fa-bolt"></i>
+                        <h4>95 Nm</h4>
+                        <span>Torque</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Power Curve Analysis (RPM)</div>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 30%;"></div>
+                        <div class="bar" style="height: 50%;"></div>
+                        <div class="bar" style="height: 65%;"></div>
+                        <div class="bar" style="height: 80%;"></div>
+                        <div class="bar highlight" style="height: 95%;"></div>
+                        <div class="bar" style="height: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>ECU Remapping <span class="red-text">Process</span></h2>
+                <p>O roadmap técnico para a performance absoluta.</p>
+            </div>
+
+            <div class="timeline-wrapper">
+                <div class="timeline-line"></div>
+                <div class="timeline-line-progress" id="progressLine"></div>
+
+                <div class="timeline-step">
+                    <div class="hexagon-border">
+                        <div class="hexagon">
+                            <i class="fas fa-search step-icon"></i>
+                            <span class="step-number">1</span>
+                        </div>
+                    </div>
+                    <h3>Diagnóstico</h3>
+                    <p>Análise completa à moto e medição inicial de base.</p>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="hexagon-border">
+                        <div class="hexagon">
+                            <i class="fas fa-download step-icon"></i>
+                            <span class="step-number">2</span>
+                        </div>
+                    </div>
+                    <h3>Leitura</h3>
+                    <p>Extração dos dados originais da ECU e configuração.</p>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="hexagon-border">
+                        <div class="hexagon">
+                            <i class="fas fa-sliders-h step-icon"></i>
+                            <span class="step-number">3</span>
+                        </div>
+                    </div>
+                    <h3>Otimização</h3>
+                    <p>Ajuste customizado baseado nos dados do Dyno.</p>
+                </div>
+
+                <div class="timeline-step">
+                    <div class="hexagon-border">
+                        <div class="hexagon">
+                            <i class="fas fa-upload step-icon"></i>
+                            <span class="step-number">4</span>
+                        </div>
+                    </div>
+                    <h3>Writing</h3>
+                    <p>Flash do novo mapa na centralina e validação final.</p>
+                </div>
+
+            </div>
+
+            <br><br>
+            <a href="#" class="btn" style="background: transparent; border: 1px solid #333;">Request ECU Tune</a>
+        </div>
+    </section>
+
+    <section id="competition" class="comp-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Competition & <span class="red-text">Academy</span></h2>
+            </div>
+
+            <div class="comp-grid">
+                <div class="comp-card"
+                    style="background-image: url('https://images.unsplash.com/photo-1541336528065-8f1fdc435835?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="badge">Beginner</div>
+                    <div class="comp-card-content">
+                        <div class="comp-icon"><i class="fas fa-bullseye"></i></div>
+                        <h3>Track Day Prep</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Skills essenciais e setup da moto para a tua primeira
+                            vez em pista.</p>
+                        <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="comp-card"
+                    style="background-image: url('https://static.wixstatic.com/media/1362f0_d274b60fe3a54eabb107278650e82126~mv2.jpg/v1/fit/w_690,h_345,q_90,enc_avif,quality_auto/1362f0_d274b60fe3a54eabb107278650e82126~mv2.jpg');">
+                    <div class="badge">Advanced</div>
+                    <div class="comp-card-content">
+                        <div class="comp-icon"><i class="fas fa-trophy"></i></div>
+                        <h3>Pro Racing</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Técnicas avançadas de corrida e estratégia de
+                            competição.</p>
+                        <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="comp-card"
+                    style="background-image: url('https://static.wixstatic.com/media/1362f0_0b2c351f7646455cb7d9ac6fbf994bb4~mv2.jpg/v1/fit/w_518,h_345,q_90,enc_avif,quality_auto/1362f0_0b2c351f7646455cb7d9ac6fbf994bb4~mv2.jpg');">
+                    <div class="badge">Intermediate</div>
+                    <div class="comp-card-content">
+                        <div class="comp-icon"><i class="fas fa-fire"></i></div>
+                        <h3>Performance Riding</h3>
+                        <p style="color: #ccc; font-size: 0.9rem;">Domina as curvas, travagem e controlo de acelerador.
+                        </p>
+                        <a href="#" class="learn-more">Learn More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>T3 MOTO <span class="red-text">PERFORMANCE</span></h2>
+                    <p>Unleashing the full potential of high-performance motorcycles through precision tuning and expert
+                        craftsmanship.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Location</h4>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Performance Drive</li>
+                        <li><i class="fas fa-city"></i> Racing District</li>
+                        <li><i class="fas fa-flag"></i> Portugal</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +351 912 345 678</li>
+                        <li><i class="fas fa-envelope"></i> info@t3moto.com</li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p style="margin-bottom: 15px; color: #888;">Recebe dicas de tuning.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Email...">
+                        <button class="btn-small"><i class="fas fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #222; padding-top: 20px; color: #555;">
+                &copy; 2025 T3 Moto Performance. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. LÓGICA DO MENU ---
+
+        // Efeito de fundo preto ao rolar
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Abrir/Fechar Menu Mobile
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu-overlay');
+        const closeMenu = document.querySelector('.close-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-links a');
+
+        mobileToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Fechar ao clicar num link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // --- 2. ANIMAÇÕES GERAIS ---
+
+        // Animação da Linha da Timeline
+        window.addEventListener('scroll', () => {
+            const timeline = document.querySelector('.timeline-section');
+            const progress = document.getElementById('progressLine');
+
+            // Posição da secção
+            const sectionPos = timeline.getBoundingClientRect().top;
+            const screenPos = window.innerHeight / 1.5;
+
+            if (sectionPos < screenPos) {
+                progress.style.width = '100%';
+            } else {
+                progress.style.width = '0%';
+            }
+        });
+
+        // Fade-in das secções
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach((section) => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.8s ease-out';
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+
+</html>
